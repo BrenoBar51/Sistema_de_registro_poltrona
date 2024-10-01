@@ -27,11 +27,13 @@ int main(){
 	char poltrona, outraReserva;
 	bool jaReservado;
 
-	//validações e loops
+	//loop de validação
 
 	while(true){
 		printf("\nDigite o tipo de passagem(1-EXECUTIVA ou 2-ECONÔMICA): ");
 		scanf("%d", &passagem);
+
+		//validação seleção de passagem
 		
 		if(passagem < 1 || passagem > 2){
 			cout << "\nTipo de passagem inválida! Por favor, selecione(1-EXECUTIVA ou 2-ECONÔMICA)";
@@ -41,6 +43,8 @@ int main(){
 		printf("\nDigite a fileira (1-10): ");
 		scanf("%d", &fileira);
 
+		//validação quantidade de fileiras
+
 		if(fileira < 1 || fileira > 10){
 			cout << "\nFileira inválida. Por favor, digite um número entre 1 e 10.";
 			continue;
@@ -48,6 +52,8 @@ int main(){
 
 		printf("\nDigite a poltrona [A][B][C][D][E][F]: ");
 		scanf(" %c", &poltrona);
+
+		//validação tipo de passagem(econômica)
 
 		if(passagem == 2){
 			switch (poltrona){
@@ -83,11 +89,15 @@ int main(){
 			}
 		}
 
+		//verificação se poltrona selecionada já foi reservada
+
 		jaReservado = reserva[fileira - 1][acento] == 'x';
 		if(jaReservado){
 			cout << "\nPoltrona já reservada. Por favor, escolha outra.\n";
 			continue;
 		}
+
+		////validação tipo de passagem(Executiva)
 
 		switch(poltrona){
 		case 'A':
@@ -119,23 +129,10 @@ int main(){
 			continue;
 		}
 
+		//Resultado da ação de reserva
+
 		reserva[fileira - 1][acento] = 'x';
 		printf("\n\t\t[A] [B] [C]\t[D] [E] [F]\n");
-
-		printf("\nFazer outra reserva ?(y/n): ");
-		scanf(" %c", &outraReserva);
-
-		switch(outraReserva){
-			case "y":
-			case "Y":
-				continue;
-			case "n":
-			case "N":
-				break;
-			default:
-				cout << "Digite uma opção válida!";
-				continue;
-		}
 
 		for(int x = 0; x < 10; x++){
 			if(x != 9){
@@ -150,7 +147,25 @@ int main(){
 				}
 			}
 		}
+
+		//Validação caso o cliente queira continuar fazendo reservas ou não
+
+		printf("\nFazer outra reserva ?(y/n): ");
+		scanf(" %c", &outraReserva);
+
+		switch(outraReserva){
+			case 'y':
+			case 'Y':
+				continue;
+			case 'n':
+			case 'N':
+				break;
+			default:
+				cout << "Resposta inválida!";
+				continue;
+		}
 		printf("\n");
+		break;
 	}
 	return 0;
 }
