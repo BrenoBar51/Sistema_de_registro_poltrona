@@ -3,166 +3,159 @@
 
 using namespace std;
 
-int main(){
+int main(int argc, char *argv[])
+{
 	setlocale(LC_ALL, "Portuguese");
 
-	//Inicializando matriz
+	// Inicializando matriz
 
 	char reserva[10][6] = {
-		{' ', ' ', ' ', ' ', ' ', ' '},
-		{' ', ' ', ' ', ' ', ' ', ' '},
-		{' ', ' ', ' ', ' ', ' ', ' '},
-		{' ', ' ', ' ', ' ', ' ', ' '},
-		{' ', ' ', ' ', ' ', ' ', ' '},
-		{' ', ' ', ' ', ' ', ' ', ' '},
-		{' ', ' ', ' ', ' ', ' ', ' '},
-		{' ', ' ', ' ', ' ', ' ', ' '},
-		{' ', ' ', ' ', ' ', ' ', ' '},
-		{' ', ' ', ' ', ' ', ' ', ' '}
-	};
+			{' ', ' ', ' ', ' ', ' ', ' '},
+			{' ', ' ', ' ', ' ', ' ', ' '},
+			{' ', ' ', ' ', ' ', ' ', ' '},
+			{' ', ' ', ' ', ' ', ' ', ' '},
+			{' ', ' ', ' ', ' ', ' ', ' '},
+			{' ', ' ', ' ', ' ', ' ', ' '},
+			{' ', ' ', ' ', ' ', ' ', ' '},
+			{' ', ' ', ' ', ' ', ' ', ' '},
+			{' ', ' ', ' ', ' ', ' ', ' '},
+			{' ', ' ', ' ', ' ', ' ', ' '}};
 
-	//variaveis utilizadas
+	// variaveis utilizadas
 
-	int fileira = 0, acento = 0, passagem = 0;
+	int fileira = -1, acento = -1, passagem = -1;
 	char poltrona, outraReserva;
-	bool jaReservado;
+	bool jaReservado, poltronaValida = false;
 
-	//loop de validação
+	// loop de validação
 
-	while(true){
-		printf("\nDigite o tipo de passagem(1-EXECUTIVA ou 2-ECONÔMICA): ");
-		scanf("%d", &passagem);
+	while (true)
+	{
+		do
+		{
+			printf("\nDigite o tipo de passagem(1-EXECUTIVA ou 2-ECONÔMICA): ");
+			scanf("%d", &passagem);
 
-		//validação seleção de passagem
-		
-		if(passagem < 1 || passagem > 2){
-			cout << "\nTipo de passagem inválida! Por favor, selecione(1-EXECUTIVA ou 2-ECONÔMICA)";
-			continue;
-		}
+			// validação seleção de passagem
 
-		printf("\nDigite a fileira (1-10): ");
-		scanf("%d", &fileira);
-
-		//validação quantidade de fileiras
-
-		if(fileira < 1 || fileira > 10){
-			cout << "\nFileira inválida. Por favor, digite um número entre 1 e 10.";
-			continue;
-		}
-
-		printf("\nDigite a poltrona [A][B][C][D][E][F]: ");
-		scanf(" %c", &poltrona);
-
-		//validação tipo de passagem(econômica)
-
-		if(passagem == 2){
-			switch (poltrona){
-				case 'A':
-				case 'a':
-					acento = 0;
-					cout << "Poltronas A e F reservadas apenas para classe Executiva!";
-					continue;
-				case 'B':
-				case 'b':
-					acento = 1;
-					break;
-				case 'C':
-				case 'c':
-					acento = 2;
-					break;
-				case 'D':
-				case 'd':
-					acento = 3;
-					break;
-				case 'E':
-				case 'e':
-					acento = 4;
-					break;
-				case 'F':
-				case 'f':
-					acento = 5;
-					cout << "Poltronas A e F reservadas apenas para classe Executiva!";
-					continue;
-				default:
-					printf("\nPoltrona inválida");
-					continue;
+			if (passagem < 1 || passagem > 2)
+			{
+				cout << "\nTipo de passagem inválida! Por favor, selecione(1-EXECUTIVA ou 2-ECONÔMICA)";
+				continue;
 			}
-		}
+		} while (passagem < 1 || passagem > 2);
 
-		//verificação se poltrona selecionada já foi reservada
+		do
+		{
+			printf("\nDigite a fileira (1-10): ");
+			scanf("%d", &fileira);
+
+			// validação quantidade de fileiras
+
+			if (fileira < 1 || fileira > 10)
+			{
+				cout << "\nFileira inválida. Por favor, digite um número entre 1 e 10.";
+				continue;
+			}
+		} while (fileira < 1 || fileira > 10);
+
+		do
+		{
+			printf("\nDigite a poltrona [A][B][C][D][E][F]: ");
+			scanf(" %c", &poltrona);
+
+			poltrona = toupper(poltrona); // Para converter letras minúsculas para maiúscula automaticamente
+
+			////validação tipo de passagem e poltrona selecionada
+
+			switch (poltrona)
+			{
+			case 'A':
+				acento = 0;
+				poltronaValida = true;
+				break;
+			case 'B':
+				acento = 1;
+				poltronaValida = true;
+				break;
+			case 'C':
+				acento = 2;
+				poltronaValida = true;
+				break;
+			case 'D':
+				acento = 3;
+				poltronaValida = true;
+				break;
+			case 'E':
+				acento = 4;
+				poltronaValida = true;
+				break;
+			case 'F':
+				acento = 5;
+				poltronaValida = true;
+				break;
+			default:
+				cout << "\nPoltrona inválida";
+				poltronaValida = false;
+				break;
+			}
+
+			if (passagem == 2 && (acento == 0 || acento == 5))
+			{
+				cout << "\nPoltronas A e F reservadas apenas para passagens Executivas!";
+				poltronaValida = false;
+			}
+		} while (!poltronaValida);
+
+		// verificação se poltrona selecionada já foi reservada
 
 		jaReservado = reserva[fileira - 1][acento] == 'x';
-		if(jaReservado){
+		if (jaReservado)
+		{
 			cout << "\nPoltrona já reservada. Por favor, escolha outra.\n";
 			continue;
 		}
 
-		////validação tipo de passagem(Executiva)
-
-		switch(poltrona){
-		case 'A':
-		case 'a':
-			acento = 0;
-			break;
-		case 'B':
-		case 'b':
-			acento = 1;
-			break;
-		case 'C':
-		case 'c':
-			acento = 2;
-			break;
-		case 'D':
-		case 'd':
-			acento = 3;
-			break;
-		case 'E':
-		case 'e':
-			acento = 4;
-			break;
-		case 'F':
-		case 'f':
-			acento = 5;
-			break;
-		default:
-			printf("\nPoltrona inválida");
-			continue;
-		}
-
-		//Resultado da ação de reserva
+		// Resultado da ação de reserva
 
 		reserva[fileira - 1][acento] = 'x';
 		printf("\n\t\t[A] [B] [C]\t[D] [E] [F]\n");
 
-		for(int x = 0; x < 10; x++){
-			if(x != 9){
+		for (int x = 0; x < 10; x++)
+		{
+			if (x != 9)
+			{
 				printf("\n\t0%d\t", x + 1);
-			}else{
+			}
+			else
+			{
 				printf("\n\t%d\t", x + 1);
 			}
-			for(int y = 0; y < 6; y++){
+			for (int y = 0; y < 6; y++)
+			{
 				cout << "[" << reserva[x][y] << "] ";
-				if (y == 2){
+				if (y == 2)
+				{
 					printf("\t");
 				}
 			}
 		}
 
-		//Validação caso o cliente queira continuar fazendo reservas ou não
-
+		// Validação caso o cliente queira continuar fazendo reservas ou não
 		printf("\nFazer outra reserva ?(y/n): ");
 		scanf(" %c", &outraReserva);
 
-		switch(outraReserva){
-			case 'y':
-			case 'Y':
-				continue;
-			case 'n':
-			case 'N':
-				break;
-			default:
-				cout << "Resposta inválida!";
-				continue;
+		outraReserva = toupper(outraReserva); // Para converter letras minúsculas para maiúscula automaticamente
+
+		switch (outraReserva)
+		{
+		case 'Y':
+			continue;
+		case 'N':
+			break;
+		default:
+			cout << "\nResposta inválida!";
+			continue;
 		}
 		printf("\n");
 		break;
